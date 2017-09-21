@@ -6,7 +6,7 @@ var cryptoTool = require('./cryptoUtil.js')
 var stdin = process.stdin;
 var stdout = process.stdout;
 
-console.log('----Welcome to the secretTool!----\n    1.add username\n    2.get password');
+console.log('----Welcome to the secretTool!----\n    1.add username\n    2.get password\n    3.show list');
 stdout.write(' \033[33m Enter your command:　\033[39m');
 stdin.setEncoding('utf8');
 stdin.on('data', function (data) {
@@ -68,13 +68,18 @@ function addPassWord(param, key) {
         // 秘钥对
         var keyCode = key
         cryptoTool.cipher('des', keyCode, data, function (encrypted) {
-            // 写入成功后读取测试
-            fs.writeFile('file/' + param + '.txt', encrypted, function (err) {
-                if (err) {
-                    throw err;
-                }
+            if (encrypted === 'err') {
+                console.log('add err')
                 stdin.pause();
-            });
+            } else {
+                // 写入成功后读取测试
+                fs.writeFile('file/' + param + '.txt', encrypted, function (err) {
+                    if (err) {
+                        throw err;
+                    }
+                    stdin.pause();
+                });
+            }
         })
     })
 }

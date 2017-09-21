@@ -28,5 +28,4 @@ exports.decipher = function (algorithm, key, encrypted, cb) {
     } catch (err) {
         cb('err')
     }
-
 }
