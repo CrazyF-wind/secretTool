@@ -6,7 +6,7 @@ var cryptoTool = require('./cryptoUtil.js')
 var stdin = process.stdin;
 var stdout = process.stdout;
 
-console.log('----Welcome to the secretTool!----\n    1.add username\n    2.get password\n');
+console.log('----Welcome to the secretTool!----\n    1.add username\n    2.get password');
 stdout.write(' \033[33m Enter your command:　\033[39m');
 stdin.setEncoding('utf8');
 stdin.on('data', function (data) {
