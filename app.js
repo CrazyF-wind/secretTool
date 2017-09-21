@@ -61,6 +61,7 @@ function importKey(cb) {
  */
 function addPassWord(param, key) {
     stdout.write(' \033[33m Enter your passWord:　\033[39m');
+    stdin.resume();
     stdin.setEncoding('utf8');
     stdin.on('data', function (data) {
         data = data.replace('\n', '')
@@ -83,11 +84,10 @@ function addPassWord(param, key) {
  */
 function getPassWord() {
     stdout.write(' \033[33m Enter your userName:　\033[39m');
-    // stdin.resume();
+    stdin.resume();
     stdin.setEncoding('utf8');
     stdin.on('data', function (data) {
         data = data.replace('\n', '')
-        stdin.pause()
         importKey(function (key) {
             // 秘钥对
             var keyCode = key
@@ -98,9 +98,11 @@ function getPassWord() {
                 cryptoTool.decipher('des', keyCode, data, function (txt) {
                     if (txt === 'err') {
                         console.log('err')
+                        stdin.pause()
                     } else {
                         // 写入成功后读取测试
                         console.log(txt)
+                        stdin.pause()
                     }
                 })
             });

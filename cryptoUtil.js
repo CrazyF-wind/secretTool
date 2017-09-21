@@ -7,11 +7,11 @@ var crypto = require('crypto')
 //加密
 exports.cipher = function (algorithm, key, buf, cb) {
     try {
-        var decrypted = "";
-        var decipher = crypto.createDecipher(algorithm, key);
-        decrypted += decipher.update(encrypted, 'hex', 'binary');
-        decrypted += decipher.final('binary');
-        cb(decrypted);
+        var encrypted = "";
+        var cip = crypto.createCipher(algorithm, key);
+        encrypted += cip.update(buf, 'binary', 'hex');
+        encrypted += cip.final('hex');
+        cb(encrypted);
     } catch (err) {
         cb('err')
     }
