@@ -7,7 +7,7 @@ var stdin = process.stdin;
 var stdout = process.stdout;
 
 console.log('----Welcome to the secretTool!----\n    1.add username\n    2.get password\n    3.show list');
-stdout.write(' \033[33m Enter your command:　\033[39m');
+stdout.write(' \033[33m Enter number:　\033[39m');
 stdin.setEncoding('utf8');
 stdin.on('data', function (data) {
     data = data.replace('\n', '')
@@ -36,7 +36,6 @@ function addUserName() {
     stdin.setEncoding('utf8');
     stdin.on('data', function (data) {
         data = data.replace('\n', '')
-        fs.createWriteStream('file/' + data + '.txt')
         importKey(function (key) {
             addPassWord(data, key)
         })
@@ -72,8 +71,13 @@ function addPassWord(param, key) {
                 console.log('add err')
                 stdin.pause();
             } else {
+                var userInfo = {
+                    'name': param,
+                    'password': encrypted
+                }
+                console.log(userInfo)
                 // 写入成功后读取测试
-                fs.writeFile('file/' + param + '.txt', encrypted, function (err) {
+                fs.writeFile('file/userInfo.json', JSON.stringify(userInfo), { 'flag': 'a' }, function (err) {
                     if (err) {
                         throw err;
                     }
@@ -91,25 +95,31 @@ function getPassWord() {
     stdout.write(' \033[33m Enter your userName:　\033[39m');
     stdin.resume();
     stdin.setEncoding('utf8');
-    stdin.on('data', function (data) {
-        data = data.replace('\n', '')
+    stdin.on('data', function (userName) {
+        userName = userName.replace('\n', '')
         importKey(function (key) {
             // 秘钥对
             var keyCode = key
-            fs.readFile('file/' + data + '.txt', 'utf-8', function (err, data) {
+            fs.readFile('file/userInfo.json', 'utf-8', function (err, data) {
                 if (err) {
                     throw err;
                 }
-                cryptoTool.decipher('des', keyCode, data, function (txt) {
-                    if (txt === 'err') {
-                        console.log('err')
-                        stdin.pause()
-                    } else {
-                        // 写入成功后读取测试
-                        console.log(txt)
-                        stdin.pause()
+                var passWord = ''
+                data = JSON.parse('[' + data.replace(/}{/g, '},{') + ']')
+                data.forEach(function (val, index) {
+                    if (val['name'] === userName) {
+                        passWord = val['password']
+                        cryptoTool.decipher('des', keyCode, passWord, function (txt) {
+                            if (txt === 'err') {
+                                console.log('err')
+                            } else {
+                                // 写入成功后读取测试
+                                console.log('password:' + txt)
+                            }
+                        })
                     }
-                })
+                });
+                stdin.pause()
             });
         })
     })
@@ -119,6 +129,14 @@ function getPassWord() {
  * 获取用户列表
  */
 function showList() {
-
+    fs.readFile('file/userInfo.json', 'utf-8', function (err, data) {
+        if (err) {
+            throw err;
+        }
+        data = JSON.parse('[' + data.replace('}{', '},{') + ']')
+        data.forEach(function (val, index) {
+            console.log((index + 1) + '.name:' + val['name'] + ',password:' + val['password'])
+        })
+    })
 }
 

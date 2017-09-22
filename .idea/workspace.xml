@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ae0b10b3-21af-4e52-9a81-4d58e6cdf138" name="默认的" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cryptoUtil.js" afterPath="$PROJECT_DIR$/cryptoUtil.js" />
     </list>
     <ignored path="secretTool.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -261,7 +260,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="1" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24962743" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
