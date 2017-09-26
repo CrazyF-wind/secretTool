@@ -6,26 +6,31 @@ var cryptoTool = require('./cryptoUtil.js')
 var stdin = process.stdin;
 var stdout = process.stdout;
 
-console.log('----Welcome to the secretTool!----\n    1.add username\n    2.get password\n    3.show list');
-stdout.write(' \033[33m Enter number:　\033[39m');
-stdin.setEncoding('utf8');
-stdin.on('data', function (data) {
-    data = data.replace('\n', '')
-    switch (Number(data)) {
-        case 1:
-            addUserName()
-            break
-        case 2:
-            getPassWord()
-            break
-        case 3:
-            showList()
-            break
-        default:
-            stdin.pause();
-            break
-    }
-})
+beginCommand()
+
+function beginCommand() {
+    console.log('----Welcome to the secretTool!----\n    1.add username\n    2.get password\n    3.show list');
+    stdout.write(' \033[33m Enter number:　\033[39m');
+    stdin.resume();
+    stdin.setEncoding('utf8');
+    stdin.on('data', function (data) {
+        data = data.replace('\n', '')
+        switch (Number(data)) {
+            case 1:
+                addUserName()
+                break
+            case 2:
+                getPassWord()
+                break
+            case 3:
+                showList()
+                break
+            default:
+                stdin.pause();
+                break
+        }
+    })
+}
 
 /**
  * 新增用户
@@ -36,6 +41,8 @@ function addUserName() {
     stdin.setEncoding('utf8');
     stdin.on('data', function (data) {
         data = data.replace('\n', '')
+        console.log('data:' + data)
+        // beginCommand()
         importKey(function (key) {
             addPassWord(data, key)
         })
@@ -98,11 +105,12 @@ function getPassWord() {
     stdin.on('data', function (userName) {
         userName = userName.replace('\n', '')
         importKey(function (key) {
+            console.log('key:' + key)
             // 秘钥对
             var keyCode = key
             fs.readFile('file/userInfo.json', 'utf-8', function (err, data) {
                 if (err) {
-                    throw err;
+                    throw err
                 }
                 var passWord = ''
                 data = JSON.parse('[' + data.replace(/}{/g, '},{') + ']')
@@ -133,7 +141,7 @@ function showList() {
         if (err) {
             throw err;
         }
-        data = JSON.parse('[' + data.replace('}{', '},{') + ']')
+        data = JSON.parse('[' + data.replace(/}{/g, '},{') + ']')
         data.forEach(function (val, index) {
             console.log((index + 1) + '.name:' + val['name'] + ',password:' + val['password'])
         })
